@@ -3,16 +3,16 @@ spring:
     name: eureka-service
 
 server:
-  port: 8080
+  port: 8000
 
 eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8080/eureka
   instance:
     hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 zuul:
   ignoredServices: '*'
@@ -20,5 +20,9 @@ zuul:
   routes:
     project:
       path: /project/**
-      serviceId: PROJECT-SERVICE
+      serviceId: project-service
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+
+ribbon:
+  ReadTimeout: 60000
+  ConnectionTimeout: 3000
